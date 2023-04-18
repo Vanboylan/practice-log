@@ -10,12 +10,17 @@
     <h1 class="title">practice-log</h1>
     <h3 class="subtitle">achieving your dreams, bite by bite</h3>
     <div class="new container">
-        <form class="signin" method="POST" href="new">
+        <form class="forgottenpassword">
             <input class="user" type="text" placeholder="username or email">
-            <input class="password" type="password" placeholder="enterpassword">
-            <button class="signin" type="submit">Sign in</button>
+            <button class="request" type="submit" onClick="showMessage()">Request new password</button>
+            <p class="message hidden">If your email is correct, a password reset link will be sent to you</p>
         </form>
     </div>
     <a class="forgotpassword" href="forgotten">Forgot Username or Password?</a>
+    <script>
+function showMessage() {
+document.querySelector('.message').remove('hidden')
+}
+    </script>
   </body>
 </html>
