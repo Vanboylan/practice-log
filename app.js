@@ -1,15 +1,48 @@
 const express = require("express");
 const path = require("path");
-const __dirname = path.resolve();
+const port = process.env.PORT || 3000;
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const port = process.env.PORT;
-
+const cookieParser = require("cookie-parser");
+const sessionsRouter = require("./routes/sessions");
 const usersRouter = require("./routes/users");
 const practicesRouter = require("./routes/practices");
 const goalsRouter = require("./routes/goals");
-const sessionsRouter = require("./routes/sessions");
+const homeRouter = require("./routes/home");
 const app = express();
+var mongoose = require("mongoose");
+
+mongoose.connect("mongodb://0.0.0.0/practice_test", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+app.use(
+  session({
+    key: "user_sid",
+    secret: "super_secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 600000,
+    },
+  })
+);
+
+// clear the cookies after user logs out
+// app.use((req, res, next) => {
+//   if (req.cookies.user_sid && !req.session.user) {
+//     res.clearCookie("user_sid");
+//   }
+//   next();
+// });
+const sessionChecker = (req, res, next) => {
+  if (!req.session.user && !req.cookies.user_sid) {
+    res.redirect("/home/index");
+  } else {
+    next();
+  }
+};
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -19,8 +52,14 @@ app.use(
     extended: true,
   })
 );
+app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
-app.use("/", sessionsRouter);
+app.use("/home", homeRouter);
+app.use("/sessions", sessionsRouter);
+app.use("/users", sessionChecker, usersRouter);
+app.use("/practices", sessionChecker, practicesRouter);
+app.use("/goals", sessionChecker, goalsRouter);
 
 app.listen(port, () => {
   console.log(`listening on PORT${port}`);
@@ -36,4 +75,4 @@ process.on("unhandledRejection", (error, origin) => {
   console.log("origin ----->" + origin);
 });
 
-export default app;
+module.exports = app;

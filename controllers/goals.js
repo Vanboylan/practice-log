@@ -24,7 +24,19 @@ const GoalsController = {
       if (err) {
         throw err;
       }
-      res.status(201).redirect(`goals/${goal.id}`);
+      res.status(201).redirect(`goals/:id`);
+    });
+  },
+  Read: (req, res) => {
+    let id = req.params.id;
+    Goal.findById(id, (err, goal) => {
+      if (err) {
+        throw err;
+      }
+      res.render("goals/:id", {
+        goal: goal,
+        user: session,
+      });
     });
   },
 };

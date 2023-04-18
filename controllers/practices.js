@@ -25,18 +25,12 @@ const PracticesController = {
         throw err;
       }
     });
-    res.status(201).redirect(`practices/${practice.id}`);
+    res.status(201).redirect(`practices/:id`);
   },
   Read: (req, res) => {
     let id = req.params.id;
-    Practice.find({ id: id }, (err, practice) => {
-      if (err) {
-        throw err;
-      }
-      res.render("practices/:id", {
-        practice: practice,
-      });
-    });
+    const practice = Practice.findById(id);
+    res.render("practices/:id", { practice: practice });
   },
 };
 
