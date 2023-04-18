@@ -8,7 +8,6 @@ const sessionsRouter = require("./routes/sessions");
 const usersRouter = require("./routes/users");
 const practicesRouter = require("./routes/practices");
 const goalsRouter = require("./routes/goals");
-const homeRouter = require("./routes/home");
 const app = express();
 var mongoose = require("mongoose");
 
@@ -36,13 +35,6 @@ app.use(
 //   }
 //   next();
 // });
-const sessionChecker = (req, res, next) => {
-  if (!req.session.user && !req.cookies.user_sid) {
-    res.redirect("/home/index");
-  } else {
-    next();
-  }
-};
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -55,11 +47,20 @@ app.use(
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
-app.use("/home", homeRouter);
+
+const sessionChecker = (req, res, next) => {
+  if (!req.session.user && !req.cookies.user_sid) {
+    res.redirect("/");
+  } else {
+    next();
+  }
+};
+
 app.use("/sessions", sessionsRouter);
-app.use("/users", sessionChecker, usersRouter);
+app.use("/users", usersRouter);
 app.use("/practices", sessionChecker, practicesRouter);
 app.use("/goals", sessionChecker, goalsRouter);
+app.use("/", sessionsRouter);
 
 app.listen(port, () => {
   console.log(`listening on PORT${port}`);

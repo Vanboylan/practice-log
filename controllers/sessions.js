@@ -1,6 +1,9 @@
 const User = require("../models/user");
 
 const SessionsController = {
+  Home: (req, res) => {
+    res.render("index");
+  },
   New: (req, res) => {
     res.render("sessions/new");
   },
