@@ -9,5 +9,22 @@
   <body>
     <h1 class="title">practice-log</h1>
     <h3 class="subtitle">achieving your dreams, bite by bite</h3>
+    <h1>New Goal</h1>
+    <p>The best goals are SMART.
+      Specific
+      Measurable
+      Achievable
+      Realistic
+      Time-Sensitive
+    </p>
+    <form class="create-goal" action="/goals/new" method="POST">
+      <label for="goal-title">Title</label>
+      <input type="text" class="title" name="title" placeholder="Give your goal a title">
+      <label for="timeframe">Timeframe</label>
+      <input type="date" class="timeframe" name="timeframe">
+      <label for="description">Description</label>
+      <input type="description" class="description" name="description" placeholder="Describe your goal">
+      <button type="submit">Add Goal</button>
+    </form>
   </body>
 </html>

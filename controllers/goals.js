@@ -18,14 +18,15 @@ const GoalsController = {
   },
   Create: (req, res) => {
     let session = req.session.user;
+    let title = req.body.title;
+    let description = req.body.description;
+    let timeframe = req.body.timeframe;
     const goal = new Goal(req.body);
     goal.user = session._id;
-    goal.save((err) => {
-      if (err) {
-        throw err;
-      }
-      res.status(201).redirect(`goals/:id`);
-    });
+    goal.title = title;
+    goal.description = description;
+    goal.timeframe = timeframe;
+    goal.save().then(res.status(201).redirect(`goals/${goal._id}`));
   },
   Read: (req, res) => {
     let id = req.params.id;

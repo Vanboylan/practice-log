@@ -8,16 +8,24 @@ const SessionsController = {
     res.render("sessions/new");
   },
   Create: (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    User.findOne({ email: email }).then((user) => {
-      if (!user) {
-        res.redirect("sessions/new");
-      } else if (!user.password == password) {
-        res.redirect("sessions/new");
+    let user = async () => {
+      let search = await User.findOne({ username: req.body.username });
+      return search;
+    };
+    const passwordCompare = (a, b) => {
+      return a === b;
+    };
+    user().then((result) => {
+      if (!result) {
+        console.log("no result");
+        res.render("sessions/new");
+      } else if (passwordCompare(result.password, req.body.password)) {
+        req.session.user = result;
+        console.log("success");
+        res.render("goals/index");
       } else {
-        req.session.user = user;
-        res.redirect("users/index");
+        console.log("password not matched");
+        res.render("sessions/new");
       }
     });
   },
