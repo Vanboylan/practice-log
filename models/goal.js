@@ -6,11 +6,20 @@ const GoalSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  title: String,
-  description: String,
-  timeframe: Date,
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  timeframe: {
+    type: String,
+    required: true,
+  },
   practices: Array,
-  progress: Number,
+  steps: Array,
   media: Array,
 });
 

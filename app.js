@@ -56,8 +56,9 @@ const sessionChecker = (req, res, next) => {
   }
 };
 
-app.use("/sessions", sessionsRouter);
-app.use("/users", usersRouter);
+app.use("/users/new", usersRouter);
+app.use("/sessions", sessionChecker, sessionsRouter);
+app.use("/users", sessionChecker, usersRouter);
 app.use("/practices", sessionChecker, practicesRouter);
 app.use("/goals", sessionChecker, goalsRouter);
 app.use("/", sessionsRouter);

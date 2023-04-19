@@ -4,14 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href='/style.css'/>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <h1 class="title">practice-log</h1>
     <h3 class="subtitle">achieving your dreams, bite by bite</h3>
     <h1>Goals</h1>
+    <div class="goals container">
+      <ul>
+      <% if (goals.length > 0) {%>
+        <% for (let goal of goals) {%>
+          <p><%= goal.title %></p>
+          <% }%>
+          <% } %>
+        </ul>
+    </div>
     <form class="add-goal" action="../goals/new" method="GET">
-    <button type="submit">+</button>
-  </form>
+      <button type="submit">+</button>
+    </form>
   </body>
 </html>
